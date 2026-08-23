@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Field Wiggles",
+      "hasCanvas": true,
+      "bodyTextLen": 493,
+      "bodyTextHash": "e9a2e0b39929f68a0e755c46e8f9cbf916b120bd83273b94bfbb415e7f4ec26d",
+      "bodyTextPrefix": "Field Wiggles Polarization is which way light’s electric shake a",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Field Wiggles",
+      "hasCanvas": true,
+      "bodyTextLen": 493,
+      "bodyTextHash": "e9a2e0b39929f68a0e755c46e8f9cbf916b120bd83273b94bfbb415e7f4ec26d",
+      "bodyTextPrefix": "Field Wiggles Polarization is which way light’s electric shake a",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
