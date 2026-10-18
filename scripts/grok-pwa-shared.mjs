@@ -141,14 +141,22 @@ export function acceptsHtml(accept) {
   return value === "" || value.includes("text/html") || value.includes("*/*");
 }
 
-/** The same URL without the install-tutorial params (used as the app link). */
+/** A same-origin app path without the install-tutorial params. */
 export function stripInstallParams(url) {
-  const [path = "/", query = ""] = String(url ?? "/").split("?", 2);
-  const params = new URLSearchParams(query);
-  params.delete("install");
-  params.delete("platform");
-  const rest = params.toString();
-  return rest ? `${path}?${rest}` : path;
+  const value = String(url ?? "/");
+  // A browser treats //host and slash-backslash as network-path references.
+  // Reject controls too: URL parsing can remove them and expose a hidden host.
+  if (!value.startsWith("/") || value.startsWith("//") || /[\\\u0000-\u0020\u007f]/.test(value)) {
+    return "/";
+  }
+  const parsed = new URL(value, "https://app.invalid");
+  // Dot-segment normalization can also produce a leading double slash.
+  if (parsed.origin !== "https://app.invalid" || parsed.pathname.startsWith("//")) {
+    return "/";
+  }
+  parsed.searchParams.delete("install");
+  parsed.searchParams.delete("platform");
+  return `${parsed.pathname}${parsed.search}${parsed.hash}`;
 }
 
 export function renderInstallPageHtml(template, { host, url } = {}) {

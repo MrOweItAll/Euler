@@ -448,6 +448,31 @@ test("strips install params from the app link", () => {
   assert.equal(stripInstallParams("/app?install=1&platform=ios&tab=2"), "/app?tab=2");
 });
 
+test("install links reject destinations outside the app", () => {
+  for (const path of [
+    "//evil.example/",
+    "///evil.example/",
+    "/\\evil.example/",
+    "/\tevil.example/",
+    "/\n/evil.example/",
+    "/safe/..//evil.example/",
+    "https://evil.example/",
+    "javascript:alert(1)",
+  ]) {
+    const target = stripInstallParams(`${path}?install=1&platform=ios`);
+    assert.equal(target, "/", path);
+    const html = renderInstallPage("wild-race.grok.me", `${path}?install=1&platform=ios`);
+    assert.match(html, /href="\/"/);
+    assert.doesNotMatch(html, /evil\.example|javascript:/);
+  }
+});
+
+test("install links preserve ordinary app paths, query values and fragments", () => {
+  const target = stripInstallParams("/app/notes?install=1&platform=ios&next=https%3A%2F%2Fexample.com%2F#saved");
+  assert.equal(target, "/app/notes?next=https%3A%2F%2Fexample.com%2F#saved");
+  assert.equal(new URL(target, "https://wild-race.grok.me").origin, "https://wild-race.grok.me");
+});
+
 test("names the install page from host slug", () => {
   assert.equal(appNameFromHost("localhost:8080"), "Grok App");
   assert.equal(appNameFromHost("172.17.154.217:8080"), "Grok App");
